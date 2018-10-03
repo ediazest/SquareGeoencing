@@ -1,5 +1,8 @@
 package com.applanticstudio.squarefencing.data
 
+import com.applanticstudio.squarefencing.data.model.Point
+import com.applanticstudio.squarefencing.data.model.Region
+
 class LocationManager {
 
     private var regions: MutableList<Region> = arrayListOf()
