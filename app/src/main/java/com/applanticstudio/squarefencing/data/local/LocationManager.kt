@@ -1,4 +1,4 @@
-package com.applanticstudio.squarefencing.data
+package com.applanticstudio.squarefencing.data.local
 
 import com.applanticstudio.squarefencing.data.model.Point
 import com.applanticstudio.squarefencing.data.model.Region

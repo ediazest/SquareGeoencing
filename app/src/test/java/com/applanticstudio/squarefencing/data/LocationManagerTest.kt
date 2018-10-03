@@ -1,5 +1,6 @@
 package com.applanticstudio.squarefencing.data
 
+import com.applanticstudio.squarefencing.data.local.LocationManager
 import com.applanticstudio.squarefencing.data.model.Point
 import com.applanticstudio.squarefencing.data.model.Region
 import org.junit.Before
