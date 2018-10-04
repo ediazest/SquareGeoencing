@@ -12,6 +12,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
 
     private val regionManager = LocationManager()
     private val locationProvider = LocationProviderMock()
+    private val user = "Tim"
 
     init {
 
@@ -42,11 +43,16 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
             locationProvider.subscribeToLocationUpdates()
                     .subscribe({
                         observer.onNext("New location registered: ${it.latitude},${it.longitude}\n")
-                        val isInside = regionManager.isInsideAnyMonitoredRegion(it).isEmpty()
+                        val regions = regionManager.isInsideAnyMonitoredRegion(it)
+                        val isInside = !regions.isEmpty()
                         if (!previous && isInside) {
-                            observer.onNext("Tim enters zone\n")
+                            for (region in regions) {
+                                observer.onNext("$user enters zone ${region.identifier}\n")
+                            }
                         } else if (previous && !isInside) {
-                            observer.onNext("Tim leaves zone\n")
+                            for (region in regions) {
+                                observer.onNext("$user leaves zone ${region.identifier}\n")
+                            }
                         }
                         previous = isInside
                     }, {
