@@ -39,8 +39,8 @@ class LocationManagerTest {
         val regionA = Region("Region A",
                 listOf(Point(51.750890, -1.261411),
                         Point(51.750578, -1.260736),
-                        Point(51.751638, -1.260650),
-                        Point(51.751419, -1.259915)))
+                        Point(51.751419, -1.259915),
+                        Point(51.751638, -1.260650)))
 
         val regionB = Region("Region B",
                 listOf(Point(51.751547, -1.260424),
@@ -52,12 +52,19 @@ class LocationManagerTest {
         regionManager.includeRegion(regionB)
 
         val insidePoint = Point(51.751454, -1.260054)
-        assert(regionManager.isInsideAnyMonitoredRegion(insidePoint),
+        assert(!regionManager.isInsideAnyMonitoredRegion(insidePoint).isEmpty(),
                 { "Error. Point should be inside monitored area" })
+        assert(regionManager.isInsideAnyMonitoredRegion(insidePoint).size == 1,
+                { "Position is only inside of 1 region" })
+        assert(regionManager.isInsideAnyMonitoredRegion(insidePoint).first().identifier == regionA.identifier)
 
         val outsidePoint = Point(50.751454, -1.280054)
-        assert(!regionManager.isInsideAnyMonitoredRegion(outsidePoint),
+        assert(regionManager.isInsideAnyMonitoredRegion(outsidePoint).isEmpty(),
                 { "Error. Point should not be inside monitored area" })
+
+        val pointInside2Areas = Point(51.7512113, -1.2604239)
+        assert(regionManager.isInsideAnyMonitoredRegion(pointInside2Areas).size == 2,
+                { "Error. Point should be inside 2 areas" })
 
     }
 }

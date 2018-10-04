@@ -18,8 +18,8 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
         val regionA = Region("Region A",
                 listOf(Point(51.750890, -1.261411),
                         Point(51.750578, -1.260736),
-                        Point(51.751638, -1.260650),
-                        Point(51.751419, -1.259915)))
+                        Point(51.751419, -1.259915),
+                        Point(51.751638, -1.260650)))
 
         val regionB = Region("Region B",
                 listOf(Point(51.751547, -1.260424),
@@ -42,7 +42,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
             locationProvider.subscribeToLocationUpdates()
                     .subscribe({
                         observer.onNext("New location registered: ${it.latitude},${it.longitude}\n")
-                        val isInside = regionManager.isInsideAnyMonitoredRegion(it)
+                        val isInside = regionManager.isInsideAnyMonitoredRegion(it).isEmpty()
                         if (!previous && isInside) {
                             observer.onNext("Tim enters zone\n")
                         } else if (previous && !isInside) {
