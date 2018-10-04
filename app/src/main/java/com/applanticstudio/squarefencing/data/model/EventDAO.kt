@@ -1,5 +1,6 @@
 package com.applanticstudio.squarefencing.data.model
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
@@ -9,7 +10,7 @@ import android.arch.persistence.room.Query
 interface EventDAO {
 
     @Query("SELECT * FROM event")
-    fun getAll(): List<Event>
+    fun getAll(): LiveData<List<Event>>
 
     @Insert()
     fun insert(event: Event)

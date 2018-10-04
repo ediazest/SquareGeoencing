@@ -17,11 +17,9 @@ class LocationManager {
 
     fun isInsideAnyMonitoredRegion(point: Point): List<Region> {
 
-        val a = regions.filter {
+        return regions.filter {
             isPointInPolygon(point, it.vertices)
         }
-
-        return a
     }
 
     //Following https://stackoverflow.com/a/26030795 response for implementing Ray Cast algorithm

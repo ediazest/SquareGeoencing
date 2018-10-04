@@ -2,17 +2,27 @@ package com.applanticstudio.squarefencing.ui.simulation
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.persistence.room.Room
+import com.applanticstudio.squarefencing.data.local.AppDatabase
+import com.applanticstudio.squarefencing.data.local.LocalDataRepository
 import com.applanticstudio.squarefencing.data.local.LocationManager
 import com.applanticstudio.squarefencing.data.local.LocationProviderMock
+import com.applanticstudio.squarefencing.data.model.Event
 import com.applanticstudio.squarefencing.data.model.Point
 import com.applanticstudio.squarefencing.data.model.Region
 import io.reactivex.Observable
+import java.util.*
 
 class SimulationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val regionManager = LocationManager()
     private val locationProvider = LocationProviderMock()
     private val user = "Tim"
+    private val appDatabase = Room.databaseBuilder(application,
+            AppDatabase::class.java,
+            "location-app-database")
+            .build()
+    private val localDataManager = LocalDataRepository(appDatabase)
 
     init {
 
@@ -48,10 +58,14 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
                         if (!previous && isInside) {
                             for (region in regions) {
                                 observer.onNext("$user enters zone ${region.identifier}\n")
+                                localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
+                                        false, region.identifier, it, user))
                             }
                         } else if (previous && !isInside) {
                             for (region in regions) {
                                 observer.onNext("$user leaves zone ${region.identifier}\n")
+                                localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
+                                        true, region.identifier, it, user))
                             }
                         }
                         previous = isInside
