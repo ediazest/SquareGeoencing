@@ -1,4 +1,4 @@
-package com.applanticstudio.squarefencing.ui.historic
+package com.applanticstudio.squarefencing.ui.historical
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel

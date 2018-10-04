@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.applanticstudio.squarefencing.ui.historic.HistoricalDataFragment
+import com.applanticstudio.squarefencing.ui.historical.HistoricalDataFragment
 import com.applanticstudio.squarefencing.ui.simulation.SimulationFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

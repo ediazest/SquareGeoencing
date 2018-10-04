@@ -1,4 +1,4 @@
-package com.applanticstudio.squarefencing.ui.historic
+package com.applanticstudio.squarefencing.ui.historical
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
