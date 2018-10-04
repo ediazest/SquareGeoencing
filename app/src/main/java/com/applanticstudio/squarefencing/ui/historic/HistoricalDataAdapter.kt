@@ -6,7 +6,15 @@ import android.widget.TextView
 import com.applanticstudio.squarefencing.data.model.Event
 
 
-class HistoricalDataAdapter(private val dataSource: List<Event>) : RecyclerView.Adapter<HistoricalDataAdapter.ViewHolder>() {
+class HistoricalDataAdapter(private val dataSource: MutableList<Event>) : RecyclerView.Adapter<HistoricalDataAdapter.ViewHolder>() {
+
+    fun updateList(values: List<Event>) {
+        val lastPosition = dataSource.size
+        dataSource.clear()
+        dataSource.addAll(dataSource.union(values))
+
+        notifyItemRangeChanged(lastPosition, values.size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = TextView(parent.context)

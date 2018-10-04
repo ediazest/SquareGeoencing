@@ -1,10 +1,21 @@
 package com.applanticstudio.squarefencing.data.local
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import com.applanticstudio.squarefencing.data.model.Event
 
 
 class LocalDataRepository(private val appDatabase: AppDatabase) {
+
+    private val observableEvents: MediatorLiveData<List<Event>> = MediatorLiveData()
+
+    init {
+        observableEvents.addSource(appDatabase.eventDao().getAll(),
+                {
+                    observableEvents.postValue(it)
+                })
+    }
+
 
     companion object {
 
@@ -28,7 +39,7 @@ class LocalDataRepository(private val appDatabase: AppDatabase) {
     }
 
     fun getAllEvents(): LiveData<List<Event>> {
-        return appDatabase.eventDao().getAll()
+        return observableEvents
     }
 
     fun dropAllValues() {

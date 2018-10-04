@@ -2,8 +2,7 @@ package com.applanticstudio.squarefencing.ui.simulation
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.persistence.room.Room
-import com.applanticstudio.squarefencing.data.local.AppDatabase
+import com.applanticstudio.squarefencing.SquareFencingApplication
 import com.applanticstudio.squarefencing.data.local.LocalDataRepository
 import com.applanticstudio.squarefencing.data.local.LocationManager
 import com.applanticstudio.squarefencing.data.local.LocationProviderMock
@@ -18,11 +17,7 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
     private val regionManager = LocationManager()
     private val locationProvider = LocationProviderMock()
     private val user = "Tim"
-    private val appDatabase = Room.databaseBuilder(application,
-            AppDatabase::class.java,
-            "location-app-database")
-            .build()
-    private val localDataManager = LocalDataRepository(appDatabase)
+    private val localDataManager = LocalDataRepository((application as SquareFencingApplication).appDatabase)
 
     init {
 

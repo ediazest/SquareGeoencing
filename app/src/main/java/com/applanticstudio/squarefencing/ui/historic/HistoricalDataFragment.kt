@@ -39,7 +39,7 @@ class HistoricalDataFragment : Fragment() {
 
         viewModel.fetchHistoricalData().observe(this, Observer {
             if (it != null) {
-                events_recyclerview.adapter = HistoricalDataAdapter(it)
+                (events_recyclerview.adapter as HistoricalDataAdapter).updateList(it)
             }
         })
     }
@@ -54,6 +54,6 @@ class HistoricalDataFragment : Fragment() {
         events_recyclerview.layoutManager = layoutManager
         events_recyclerview.addItemDecoration(dividerItemDecoration)
 
-        events_recyclerview.adapter = HistoricalDataAdapter(listOf())
+        events_recyclerview.adapter = HistoricalDataAdapter(mutableListOf())
     }
 }
