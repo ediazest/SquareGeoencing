@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SquareFencing</string>
+    <string name="menu_simulation">Simulation</string>
+    <string name="menu_data">Past Data</string>
+
+    <string name="action_start_simulation">Start simulation</string>
+    <string name="register_events_title">Registered events</string>
 </resources>
