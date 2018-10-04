@@ -25,13 +25,15 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
                 listOf(Point(51.750890, -1.261411),
                         Point(51.750578, -1.260736),
                         Point(51.751419, -1.259915),
-                        Point(51.751638, -1.260650)))
+                        Point(51.751638, -1.260650),
+                        Point(51.750890, -1.261411)))
 
         val regionB = Region("Region B",
                 listOf(Point(51.751547, -1.260424),
                         Point(51.751454, -1.260054),
                         Point(51.751106, -1.260446),
-                        Point(51.751189, -1.260768)))
+                        Point(51.751189, -1.260768),
+                        Point(51.751547, -1.260424)))
 
         regionManager.includeRegion(regionA)
         regionManager.includeRegion(regionB)
@@ -44,26 +46,26 @@ class SimulationViewModel(application: Application) : AndroidViewModel(applicati
             observer.onNext("Starting simulation\n")
             observer.onNext("*******************\n")
 
-            var previous = false
+            var previous: List<Region> = listOf()
             locationProvider.subscribeToLocationUpdates()
                     .subscribe({
                         observer.onNext("New location registered: ${it.latitude},${it.longitude}\n")
                         val regions = regionManager.isInsideAnyMonitoredRegion(it)
-                        val isInside = !regions.isEmpty()
-                        if (!previous && isInside) {
-                            for (region in regions) {
-                                observer.onNext("$user enters zone ${region.identifier}\n")
-                                localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
-                                        false, region.identifier, it, user))
-                            }
-                        } else if (previous && !isInside) {
-                            for (region in regions) {
-                                observer.onNext("$user leaves zone ${region.identifier}\n")
-                                localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
-                                        true, region.identifier, it, user))
-                            }
+
+                        for (region in previous.minus(regions)) {
+                            observer.onNext("$user leaves zone ${region.identifier}\n")
+                            localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
+                                    true, region.identifier, it, user))
                         }
-                        previous = isInside
+
+                        for (region in regions.minus(previous)) {
+                            observer.onNext("$user enters zone ${region.identifier}\n")
+                            localDataManager.insertEvent(Event(UUID.randomUUID().toString(), Date(),
+                                    false, region.identifier, it, user))
+                        }
+
+                        previous = regions
+
                     }, {
                         observer.onError(it)
                     }, {

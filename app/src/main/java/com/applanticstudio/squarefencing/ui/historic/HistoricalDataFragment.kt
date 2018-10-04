@@ -40,8 +40,10 @@ class HistoricalDataFragment : Fragment() {
         viewModel.fetchHistoricalData().observe(this, Observer {
             if (it != null) {
                 (events_recyclerview.adapter as HistoricalDataAdapter).updateList(it)
+                events_recyclerview.smoothScrollToPosition(it.size)
             }
         })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
