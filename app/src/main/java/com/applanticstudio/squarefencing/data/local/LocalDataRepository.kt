@@ -2,26 +2,13 @@ package com.applanticstudio.squarefencing.data.local
 
 import android.arch.lifecycle.LiveData
 import com.applanticstudio.squarefencing.data.model.Event
+import javax.inject.Inject
 
 
-class LocalDataRepository(private val appDatabase: AppDatabase) {
+class LocalDataRepository {
 
-    companion object {
-
-        private var sInstance: LocalDataRepository? = null
-
-        fun getInstance(database: AppDatabase): LocalDataRepository {
-            if (sInstance == null) {
-                synchronized(LocalDataRepository::class.java) {
-                    if (sInstance == null) {
-                        sInstance = LocalDataRepository(database)
-                    }
-                }
-            }
-            return sInstance!!
-        }
-
-    }
+    @Inject
+    lateinit var appDatabase: AppDatabase
 
     fun insertEvent(event: Event) {
         appDatabase.eventDao().insert(event)

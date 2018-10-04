@@ -2,45 +2,23 @@ package com.applanticstudio.squarefencing.ui.simulation
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.persistence.room.Room
-import com.applanticstudio.squarefencing.data.local.AppDatabase
 import com.applanticstudio.squarefencing.data.local.LocalDataRepository
 import com.applanticstudio.squarefencing.data.local.LocationManager
 import com.applanticstudio.squarefencing.data.local.LocationProviderMock
 import com.applanticstudio.squarefencing.data.model.Event
-import com.applanticstudio.squarefencing.data.model.Point
-import com.applanticstudio.squarefencing.data.model.Region
 import io.reactivex.Observable
 import java.util.*
+import javax.inject.Inject
 
 class SimulationViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val regionManager = LocationManager()
     private val locationProvider = LocationProviderMock()
     private val user = "Tim"
-    private val appDatabase = Room.databaseBuilder(application,
-            AppDatabase::class.java,
-            "location-app-database")
-            .build()
-    private val localDataManager = LocalDataRepository(appDatabase)
 
-    init {
+    @Inject
+    lateinit var regionManager: LocationManager
 
-        val regionA = Region("Region A",
-                listOf(Point(51.750890, -1.261411),
-                        Point(51.750578, -1.260736),
-                        Point(51.751419, -1.259915),
-                        Point(51.751638, -1.260650)))
-
-        val regionB = Region("Region B",
-                listOf(Point(51.751547, -1.260424),
-                        Point(51.751454, -1.260054),
-                        Point(51.751106, -1.260446),
-                        Point(51.751189, -1.260768)))
-
-        regionManager.includeRegion(regionA)
-        regionManager.includeRegion(regionB)
-    }
+    @Inject
+    lateinit var localDataManager: LocalDataRepository
 
     fun startSimulationProcess(): Observable<String> {
         return Observable.create<String> { observer ->
